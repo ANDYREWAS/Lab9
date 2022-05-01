@@ -59,6 +59,11 @@ void __interrupt() isr (void){
             CCPR1L = (uint8_t)(CCPR>>2);    // Guardamos los 8 bits mas significativos en CPR1L
             CCP1CONbits.DC1B = CCPR & 0b11; // Guardamos los 2 bits menos significativos en DC1B
         }
+        else if (ADCON0bits.CHS == 1){
+            CCPR = map(ADRESH, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX); // Valor de ancho de pulso
+            CCPR1L = (uint8_t)(CCPR>>2);    // Guardamos los 8 bits mas significativos en CPR1L
+            CCP1CONbits.DC1B = CCPR & 0b11; // Guardamos los 2 bits menos significativos en DC1B
+        }
         PIR1bits.ADIF = 0;                  // Limpiamos bandera de interrupción
     }
     return;
@@ -71,8 +76,14 @@ void main(void) {
     setup();
     while(1){
         if(ADCON0bits.GO == 0){             // No hay proceso de conversion
+            if(ADCON0bits.CHS == 0b0000)    
+                ADCON0bits.CHS = 0b0001;    // Cambio de canal
+            else if(ADCON0bits.CHS == 0b0001)
+                ADCON0bits.CHS = 0b0000;    // Cambio de canal
+            __delay_us(40);                 // Tiempo de adquisición            
             ADCON0bits.GO = 1;              // Iniciamos proceso de conversión
         }
+        
     }
     return;
 }
@@ -101,6 +112,7 @@ void setup(void){
     
     // Configuración PWM
     TRISCbits.TRISC2 = 1;       // Deshabilitamos salida de CCP1
+    TRISCbits.TRISC3 = 1;       // Deshabilitamos salida de CCP1
     PR2 = 124;                  // periodo de 2ms
     
     // Configuración CCP
@@ -118,6 +130,7 @@ void setup(void){
     PIR1bits.TMR2IF = 0;        // Limpiamos bandera de interrupcion del TMR2 nuevamente
     
     TRISCbits.TRISC2 = 0;       // Habilitamos salida de PWM
+    TRISCbits.TRISC3 = 0;       // Habilitamos salida de PWM
 
     // Configuracion interrupciones
     PIR1bits.ADIF = 0;          // Limpiamos bandera de ADC

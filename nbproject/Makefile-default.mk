@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Prelab.c
+SOURCEFILES_QUOTED_IF_SPACED=Lab9.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Prelab.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/Prelab.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Lab9.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/Lab9.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Prelab.p1
+OBJECTFILES=${OBJECTDIR}/Lab9.p1
 
 # Source Files
-SOURCEFILES=Prelab.c
+SOURCEFILES=Lab9.c
 
 
 
@@ -94,22 +94,22 @@ MP_PROCESSOR_OPTION=16F887
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/Prelab.p1: Prelab.c  nbproject/Makefile-${CND_CONF}.mk 
+${OBJECTDIR}/Lab9.p1: Lab9.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Prelab.p1.d 
-	@${RM} ${OBJECTDIR}/Prelab.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Prelab.p1 Prelab.c 
-	@-${MV} ${OBJECTDIR}/Prelab.d ${OBJECTDIR}/Prelab.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Prelab.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/Lab9.p1.d 
+	@${RM} ${OBJECTDIR}/Lab9.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Lab9.p1 Lab9.c 
+	@-${MV} ${OBJECTDIR}/Lab9.d ${OBJECTDIR}/Lab9.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Lab9.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 else
-${OBJECTDIR}/Prelab.p1: Prelab.c  nbproject/Makefile-${CND_CONF}.mk 
+${OBJECTDIR}/Lab9.p1: Lab9.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Prelab.p1.d 
-	@${RM} ${OBJECTDIR}/Prelab.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Prelab.p1 Prelab.c 
-	@-${MV} ${OBJECTDIR}/Prelab.d ${OBJECTDIR}/Prelab.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Prelab.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/Lab9.p1.d 
+	@${RM} ${OBJECTDIR}/Lab9.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Lab9.p1 Lab9.c 
+	@-${MV} ${OBJECTDIR}/Lab9.d ${OBJECTDIR}/Lab9.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Lab9.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 

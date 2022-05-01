@@ -1,4 +1,4 @@
-# 1 "Prelab.c"
+# 1 "Lab9.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,8 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "Prelab.c" 2
-# 10 "Prelab.c"
+# 1 "Lab9.c" 2
+# 10 "Lab9.c"
 #pragma config FOSC = INTRC_NOCLKOUT
 #pragma config WDTE = OFF
 #pragma config PWRTE = OFF
@@ -2644,17 +2644,18 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 29 "C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\\pic\\include\\xc.h" 2 3
-# 28 "Prelab.c" 2
+# 28 "Lab9.c" 2
 
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.35\\pic\\include\\c90\\stdint.h" 1 3
-# 29 "Prelab.c" 2
-# 44 "Prelab.c"
-unsigned short CCPR = 0;
+# 29 "Lab9.c" 2
+# 44 "Lab9.c"
+unsigned short CCPR = 0, LEDPOT =0,compledpot = 0;
 
 
 
 
 void setup(void);
+void led(void);
 unsigned short map(uint8_t val, uint8_t in_min, uint8_t in_max,
             unsigned short out_min, unsigned short out_max);
 
@@ -2667,8 +2668,34 @@ void __attribute__((picinterrupt(("")))) isr (void){
             CCPR1L = (uint8_t)(CCPR>>2);
             CCP1CONbits.DC1B = CCPR & 0b11;
         }
+        else if(ADCON0bits.CHS == 1){
+            CCPR = map(ADRESH, 0, 255, 0, 500);
+            CCPR2L = (uint8_t)(CCPR>>2);
+            CCP2CONbits.DC2B0 = CCPR & 0b11;
+        }
+        else if(ADCON0bits.CHS == 2){
+            LEDPOT = PORTAbits.RA2;
+            CCP1CON = 0;
+            CCP1CONbits.CCP1M = 0b0010;
+            led();
+        }
+
+
         PIR1bits.ADIF = 0;
     }
+
+
+    if(T0IF){
+
+
+
+
+        compledpot++;
+        TMR0 = 249;
+        INTCONbits.T0IF = 0;
+    }
+
+
     return;
 }
 
@@ -2679,8 +2706,28 @@ void main(void) {
     setup();
     while(1){
         if(ADCON0bits.GO == 0){
+            if(ADCON0bits.CHS == 0b0000)
+                ADCON0bits.CHS = 0b0001;
+            else if(ADCON0bits.CHS == 0b0001)
+                ADCON0bits.CHS = 0b0010;
+            _delay((unsigned long)((40)*(4000000/4000000.0)));
             ADCON0bits.GO = 1;
         }
+            else if(ADCON0bits.CHS == 0b0010)
+                ADCON0bits.CHS = 0b0000;
+
+            _delay((unsigned long)((40)*(4000000/4000000.0)));
+            ADCON0bits.GO = 1;
+    }
+    return;
+}
+
+void led(void){
+    if(compledpot = 0){
+        PORTDbits.RD0 = 1;
+    }
+    if(compledpot = LEDPOT){
+        PORTDbits.RD0 = 0;
     }
     return;
 }
@@ -2689,10 +2736,11 @@ void main(void) {
 
 
 void setup(void){
-    ANSEL = 0b1;
+    ANSEL = 0b00000111;
     ANSELH = 0;
-    TRISA = 0b1;
+    TRISA = 0b00000111;
     PORTA = 0;
+
 
 
     OSCCONbits.IRCF = 0b110;
@@ -2709,32 +2757,59 @@ void setup(void){
 
 
     TRISCbits.TRISC2 = 1;
-    PR2 = 124;
+    TRISCbits.TRISC1 = 1;
+    TRISDbits.TRISD0 = 1;
+    PR2 = 255;
 
 
     CCP1CON = 0;
-    CCP1CONbits.P1M = 0;
+    CCP1CONbits.P1M = 0b0;
     CCP1CONbits.CCP1M = 0b1100;
 
-    CCPR1L = 125>>2;
-    CCP1CONbits.DC1B = 125 & 0b11;
+    CCPR1L = 256>>2;
+    CCP1CONbits.DC1B = 256 & 0b11;
+
+    CCP2CON = 0;
+    CCP2CONbits.CCP2M = 0b1100;
+    CCPR2L = 256>>2;
+    CCP2CONbits.DC2B0 = 256 & 0b11;
+
+
+
 
     PIR1bits.TMR2IF = 0;
     T2CONbits.T2CKPS = 0b11;
+    T2CONbits.TOUTPS = 0b0001;
     T2CONbits.TMR2ON = 1;
     while(!PIR1bits.TMR2IF);
     PIR1bits.TMR2IF = 0;
 
+
+
     TRISCbits.TRISC2 = 0;
+    TRISCbits.TRISC1 = 0;
+    TRISDbits.TRISD0 = 0;
 
 
     PIR1bits.ADIF = 0;
     PIE1bits.ADIE = 1;
     INTCONbits.PEIE = 1;
     INTCONbits.GIE = 1;
+    PIE1bits.CCP1IE = 1;
+    PIR1bits.CCP1IF = 0;
+
+
+
+    OPTION_REGbits.T0CS = 0;
+    OPTION_REGbits.T0SE = 0;
+    OPTION_REGbits.PSA = 0;
+    OPTION_REGbits.PS2 = 0;
+    OPTION_REGbits.PS1 = 1;
+    OPTION_REGbits.PS0 = 1;
+
 
 }
-# 140 "Prelab.c"
+# 215 "Lab9.c"
 unsigned short map(uint8_t x, uint8_t x0, uint8_t x1,
             unsigned short y0, unsigned short y1){
     return (unsigned short)(y0+((float)(y1-y0)/(x1-x0))*(x-x0));
